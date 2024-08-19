@@ -3,25 +3,15 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 
-export function TodoInput() {
+export function TodoInput({tasks,setTasks}) {
     const [isModalOpen, setModalOpen] = useState(false);
     const displayModal = () => setModalOpen(!isModalOpen);
     const formRef = useRef(null);
     const inputTaskRef = useRef(null)
     const inputTimeRef = useRef(null)
-
-
-    const [tasks,setTasks] = useState([])
-    useEffect(()=>{
-        const savedTasks = JSON.parse(localStorage.getItem('tasks'))
-        setTasks(savedTasks)
-    },[])
-
-    useEffect(() => {
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-    }, [tasks]);    
-
+    
     const handleSubmit = (event) =>{
         event.preventDefault()
         const lastId = tasks.reduce((maxId, t) => t.id > maxId ? t.id : maxId, 0);
@@ -29,7 +19,8 @@ export function TodoInput() {
         const newTask = {
             id : lastId + 1,
             title : inputTaskRef.current.value,
-            time : inputTimeRef.current.value
+            time : inputTimeRef.current.value,
+            isChecked : false
         }
         
         setTasks(prev => [...prev, newTask])
@@ -39,16 +30,17 @@ export function TodoInput() {
 
     const handleCloseClick = () => setModalOpen(!isModalOpen);
 
-
     const { isDarkMode } = useContext(ThemeContext);
 
     const inputClasses = isDarkMode ? 'p-2 border border-gray-700 rounded-md bg-black text-white focus:outline-none focus:ring-2 focus:ring-gray-500' : 'p-2 border border-gray-300 rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500'
     const dialogClasses = isDarkMode ? "bg-blue-950 rounded-lg p-6 shadow-lg max-w-md w-full absolute bottom-1" : "bg-gray-300 rounded-lg p-6 shadow-lg max-w-md w-full absolute bottom-1"
     return (
         <>
-            <div className='flex justify-center items-center mt-1'>
-                <FontAwesomeIcon onClick={displayModal} icon={faPlus} />
-            </div>
+            <Link to="/tasks-create">
+                <div className='flex justify-center items-center mt-1'>
+                    <FontAwesomeIcon onClick={displayModal} icon={faPlus} />
+                </div>
+            </Link>
             {isModalOpen && (
                 <div className='relative'>
                     <dialog open className={dialogClasses}>
