@@ -13,6 +13,7 @@ export function SearchBar() {
         <>
             <div className="relative w-full">
                 <input
+                    id="searchBar"
                     type="search"
                     className="w-full rounded-full p-1 pl-10 border-2 border-gray-500 focus:border-gray-800 shadow-md focus:shadow-lg transition duration-200 outline-none bg-gray-100"
                     placeholder="Search"

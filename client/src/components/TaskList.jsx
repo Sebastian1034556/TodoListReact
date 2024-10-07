@@ -1,8 +1,8 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect,useState } from 'react';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { TaskComponent } from './TaskComponent';
-export function TaskList({tasks,setTasks}){
 
+export function TaskList({tasks,setTasks}){
     const {isDarkMode} = useContext(ThemeContext)
     return(
         <>

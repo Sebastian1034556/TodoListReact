@@ -1,17 +1,20 @@
-// src/context/ThemeContext.js
+import React, { createContext, useState, useEffect } from 'react';
 
-import React, { createContext, useState } from 'react';
-
-// Crear el contexto
 const ThemeContext = createContext();
 
-// Proveedor del contexto
 const ThemeProvider = ({ children }) => {
-    const [isDarkMode, setIsDarkMode] = useState(false);
+    const [isDarkMode, setIsDarkMode] = useState(() => {
+        const savedMode = JSON.parse(localStorage.getItem("currentDarkMode"));
+        return savedMode !== null ? savedMode : true;
+    });
 
     const toggleTheme = () => {
         setIsDarkMode(prevMode => !prevMode);
     };
+
+    useEffect(() => {
+        localStorage.setItem("currentDarkMode", JSON.stringify(isDarkMode));
+    }, [isDarkMode]);
 
     return (
         <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
